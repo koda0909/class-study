@@ -41,6 +41,79 @@ while True:
 
         else:
             print(f"재고가 {products[num]['stock']}개 남았습니다.")
+            quantity = int(input("수량: "))
+
+            if quantity <= 0:
+                print("수량은 1개 이상 입력해야 합니다.")
+
+            elif quantity > products[num]["stock"]:
+                print("재고가 부족합니다.")
+
+            else:
+                if num in cart:
+                    cart[num] += quantity
+                else:
+                    cart[num] = quantity
+
+                products[num]["stock"] -= quantity
+
+                print(f"{products[num]['name']} {quantity}개를 장바구니에 담았습니다.")
+
+    # 3. 상품 빼기
+    elif choice == "3":
+        num = int(input("상품 번호: "))
+
+        if num not in cart:
+            print("장바구니에 없는 상품입니다.")
+
+        else:
+            quantity = cart[num]
+            products[num]["stock"] += quantity
+            del cart[num]
+
+            print(f"{products[num]['name']} 상품을 장바구니에서 제거했습니다.")
+
+    # 장바구니
+    elif choice =="4":
+        if not cart:
+            print("장바구니가 비어있습니다")
+        else:
+            total = 0
+
+            print("=" * 50)
+            print("[장바구니]")
+
+            for num, quantity in cart.items():
+                name = products[num]["name"]
+                price = products[num]["price"]
+                subtotal = price * quantity
+
+                total += subtotal
+
+                print(f"{name:<12} {price:>7,}원 * {quantity}개 = {subtotal:>9,}원")
+            print("=" * 50)
+
+            # 상품합계
+            print(f"상품 합계: {total:,}원")
+
+            # 배송비
+            if total >= 50000:
+                delivery = 0
+            else:
+                delivery = 3000
+
+            print(f"배송비: {delivery:,}원")
+
+            # 최종 결제 금액
+            discount = 0
+            final_price = total - discount + delivery
+
+            print("=" * 50)
+            print(f"최종 결제 금액: {final_price:,}원")
+            print("=" * 50)
+
+            
+
 
     # q. 종료
     elif choice == "q":
